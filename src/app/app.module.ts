@@ -1,11 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
+import { RegiterComponent } from './regiter/regiter.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    LoginComponent,
+    AppComponent,
+    RegiterComponent
   ],
   imports: [
     BrowserModule
