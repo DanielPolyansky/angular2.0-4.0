@@ -14,6 +14,14 @@ import { MessageInputComponent } from './chat/message-list/message/message-searc
 import { ConversationComponent } from './chat/conversation-list/conversation/conversation.component';
 import { ConversationSearchComponent } from './chat/conversation-list/conversation-search/conversation-search.component';
 import { ConversationManagingComponent } from './chat/conversation-list/conversation-managing/conversation-managing.component';
+import { Routes, RouterModule } from "@angular/router";
+
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent  },
+  { path: 'home', component: HomeComponent  },
+  { path: 'login',  component: LoginComponent },
+  { path: 'register',  component: RegisterComponent }
+];
 
 @NgModule({
   declarations: [
@@ -33,7 +41,8 @@ import { ConversationManagingComponent } from './chat/conversation-list/conversa
     ConversationManagingComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
