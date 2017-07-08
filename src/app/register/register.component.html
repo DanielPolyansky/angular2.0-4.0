@@ -1,3 +1,27 @@
-<p>
-  register works!
-</p>
+<main>
+    <form class="auth-form">
+        <header>
+            <h1>Sign Up</h1>
+        </header>
+        <div class="fields">
+            <div class="auth-field">
+                <label for="username">Username</label>
+                <input name="username" type="text" ngModel>
+            </div>
+            <div class="auth-field">
+                <label for="email">Email</label>
+                <input name="email" type="text" ngModel>
+            </div>
+            <div class="auth-field">
+                <label for="pass">Password</label>
+                <input name="pass" type="password" ngModel>
+            </div>
+            <div class="auth-field">
+                <label for="confpass">Password Confirmation</label>
+                <input name="confpass" type="password" ngModel>
+            </div>
+            <button class="submit">Sign up</button>
+        </div>
+
+    </form>
+</main>

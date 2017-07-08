@@ -1,3 +1,18 @@
-<p>
-  login works!
-</p>
+<main>
+    <form class="auth-form" (ngSubmit)="onSubmit()">
+        <header>
+            <h1>Sign In</h1>
+        </header>
+        <div class="fields">
+            <div class="auth-field">
+                <label for="email">Email</label>
+                <input name="email" type="text" ngModel>
+            </div>
+            <div class="auth-field">
+                <label for="pass">Password</label>
+                <input name="pass" type="password" ngModel>
+            </div>
+            <button class="submit">Sign up</button>
+        </div>
+    </form>
+</main>
