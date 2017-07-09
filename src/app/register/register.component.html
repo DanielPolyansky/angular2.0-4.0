@@ -1,27 +1,30 @@
 <main>
-    <form class="auth-form">
+    <form class="auth-form" (ngSubmit)="onSubmit()" #f="ngForm">
         <header>
             <h1>Sign Up</h1>
         </header>
         <div class="fields">
             <div class="auth-field">
                 <label for="username">Username</label>
-                <input name="username" type="text" ngModel>
+                <input name="username" type="text" ngModel required #username="ngModel">
+                <span class="validation" *ngIf="!username.valid && f.submitted">Please, enter a valid username!</span>
             </div>
             <div class="auth-field">
                 <label for="email">Email</label>
-                <input name="email" type="text" ngModel>
+                <input name="email" type="text" ngModel required email #email="ngModel">
+                <span class="validation" *ngIf="!email.valid && f.submitted">Please, enter a valid email!</span>
             </div>
             <div class="auth-field">
                 <label for="pass">Password</label>
-                <input name="pass" type="password" ngModel>
+                <input name="pass" type="password" min="8" max="15" ngModel required #pass="ngModel">
+                <span class="validation" *ngIf="!pass.valid && f.submitted">Please, enter a valid password!From 8 to 15 symbols.</span>
             </div>
             <div class="auth-field">
                 <label for="confpass">Password Confirmation</label>
-                <input name="confpass" type="password" ngModel>
+                <input name="confpass" type="password" ngModel min="8" max="15" required #confpass="ngModel">
+                <span class="validation" *ngIf="pass!=confpass && f.submitted">Passwords do not match!</span>
             </div>
             <button class="submit">Sign up</button>
         </div>
-
     </form>
 </main>

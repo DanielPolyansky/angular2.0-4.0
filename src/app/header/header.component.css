@@ -21,4 +21,5 @@ nav {
     justify-content: flex-end;
     background-color: #3B3E99;
     border: 1px solid black;
+    text-shadow: 2px 1px black;
 }

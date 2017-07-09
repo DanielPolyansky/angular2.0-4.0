@@ -1,16 +1,18 @@
 <main>
-    <form class="auth-form" (ngSubmit)="onSubmit()">
+    <form class="auth-form" [formGroup]="signInFormReactive" (ngSubmit)="onSubmit()">
         <header>
             <h1>Sign In</h1>
         </header>
         <div class="fields">
             <div class="auth-field">
                 <label for="email">Email</label>
-                <input name="email" type="text" ngModel>
+                <input name="email" type="text" formControlName="email">
+                <span class="validation" *ngIf="!signInFormReactive.get('email').valid && signInFormReactive.touched">Please, enter a valid email!</span>
             </div>
             <div class="auth-field">
                 <label for="pass">Password</label>
-                <input name="pass" type="password" ngModel>
+                <input name="pass" type="password" formControlName="password">
+                <span class="validation" *ngIf="!signInFormReactive.get('password').valid  && signInFormReactive.touched">Please, enter a valid password! From 8 to 15 symbols.</span>
             </div>
             <button class="submit">Sign up</button>
         </div>
