@@ -12,7 +12,7 @@
             <div class="auth-field">
                 <label for="pass">Password</label>
                 <input name="pass" type="password" formControlName="password">
-                <span class="validation" *ngIf="!signInFormReactive.get('password').valid  && signInFormReactive.touched">Please, enter a valid password! From 8 to 15 symbols.</span>
+                <span class="validation" *ngIf="!signInFormReactive.get('password').valid  && signInFormReactive.touched">Please, enter a valid password! From 5 to 15 symbols.</span>
             </div>
             <button class="submit">Sign up</button>
         </div>

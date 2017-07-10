@@ -1,0 +1,11 @@
+import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
+@Injectable()
+export class AuthService {
+    constructor(private http: Http){
+
+    }
+    signIn(email, password){
+        return this.http.post('http://localhost:3000/api/login',[email, password]);
+    }
+}

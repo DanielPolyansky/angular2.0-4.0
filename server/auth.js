@@ -1,8 +1,8 @@
 const express = require('express');
 const auth = express.Router();
 const path = require('path');
-const User = require('../models/userSchema');
-const secret = require('../../config').secret;
+const User = require('./models/userModel');
+const secret = require('../config').secret;
 const jwt = require('jsonwebtoken');
 const { SHA256 } = require('crypto-js');
 
