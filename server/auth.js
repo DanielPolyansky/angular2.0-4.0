@@ -11,9 +11,10 @@ let socket = require('socket.io');
 
 auth.post('/login', (req, res, next) => {
 
-    req.checkBody('username', 'Invalid login!').notEmpty().isLength({ min: 5, max: 15 });
-    req.checkBody('password', 'Invalid password!').notEmpty().isLength({ min: 5, max: 15 });
-
+    req.checkBody('email', 'email is empty!').notEmpty();
+    req.checkBody('email', 'Not an email!').isEmail();
+    req.checkBody('password', 'Invalid password length!').isLength({ min: 8, max: 15 });
+    req.checkBody('password', 'Password is empty!').notEmpty();
     const errors = req.validationErrors();
     if (errors) {
         const messages = [];
@@ -27,7 +28,7 @@ auth.post('/login', (req, res, next) => {
         })
     } else {
         User.findOne({
-            username: req.body.username,
+            email: req.body.email,
         }, (err, user) => {
             if (err) {
                 console.log(err.msg);
@@ -53,11 +54,18 @@ auth.post('/login', (req, res, next) => {
 
 
 auth.post('/authenticate', (req, res, next) => {
+    /* console.log(req.body.email);
+     console.log(req.body.username);
+     console.log(req.body.password);*/
+    console.log(req.body);
 
-    req.checkBody('email', 'Invalid email!').notEmpty().isEmail();
-    req.checkBody('username', 'Invalid login!').notEmpty();
-    req.checkBody('password', 'Invalid password!').notEmpty().isLength({ min: 5 });
-    req.checkBody('confirm_password', 'Passwords do not match!').equals(req.body.password);
+    req.checkBody('email', 'Invalid email!Email is empty').notEmpty();
+    req.checkBody('email', 'Email value is invalid!').isEmail();
+    req.checkBody('username', 'Invalid login. Login is empty!').notEmpty();
+    req.checkBody('password', 'Invalid password length!').isLength({ min: 8, max: 15 });
+    req.checkBody('password', 'Invalid password! Empty!').notEmpty();
+    req.checkBody('pass2', 'Passwords do not match!').equals(req.body.password);
+    // 
 
     const errors = req.validationErrors();
     if (errors) {
@@ -78,16 +86,16 @@ auth.post('/authenticate', (req, res, next) => {
             friends: []
         });
 
-        newUser.save().then((usr) => {
+        newUser.save().then((user) => {
                 res.json({
                     success: true,
-                    message: usr
+                    message: user
                 });
             },
             (err) => {
                 res.json({
                     success: false,
-                    message: err.errmsg
+                    message: err.message
                 });
             }
         );

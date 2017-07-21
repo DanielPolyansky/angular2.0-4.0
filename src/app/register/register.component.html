@@ -1,30 +1,44 @@
 <main>
-    <form class="auth-form" (ngSubmit)="onSubmit()" #f="ngForm">
+    <form class="auth-form" (ngSubmit)="onAuthenticate(f)" #f="ngForm">
         <header>
             <h1>Sign Up</h1>
         </header>
-        <div class="fields">
+        <div class="fields" *ngIf="!f.submitted">
             <div class="auth-field">
                 <label for="username">Username</label>
                 <input name="username" type="text" ngModel required #username="ngModel">
-                <span class="validation" *ngIf="!username.valid && f.submitted">Please, enter a valid username!</span>
+                <span class="validation" *ngIf="!username.valid && username.touched">Please, enter a valid username!</span>
             </div>
             <div class="auth-field">
                 <label for="email">Email</label>
                 <input name="email" type="text" ngModel required email #email="ngModel">
-                <span class="validation" *ngIf="!email.valid && f.submitted">Please, enter a valid email!</span>
+                <span class="validation" *ngIf="!email.valid && email.touched">Please, enter a valid email!</span>
             </div>
             <div class="auth-field">
-                <label for="pass">Password</label>
-                <input name="pass" type="password" min="8" max="15" ngModel required #pass="ngModel">
-                <span class="validation" *ngIf="!pass.valid && f.submitted">Please, enter a valid password!From 8 to 15 symbols.</span>
+                <label for="password">Password</label>
+                <input name="password" type="password" ngModel required minlength="8" maxlength="15" #password="ngModel">
+                <span class="validation" *ngIf="!password.valid && password.touched">Please, enter a valid password!From 8 to 15 symbols.</span>
             </div>
             <div class="auth-field">
-                <label for="confpass">Password Confirmation</label>
-                <input name="confpass" type="password" ngModel min="8" max="15" required #confpass="ngModel">
-                <span class="validation" *ngIf="pass!=confpass && f.submitted">Passwords do not match!</span>
+                <label for="pass2">Password Confirmation</label>
+                <input name="pass2" type="password" ngModel required #pass2="ngModel">
+                <span class="validation" *ngIf="(!pass2.valid || pass2.value!=password.value) && pass2.touched">Passwords do not match!</span>
             </div>
             <button class="submit">Sign up</button>
+        </div>
+        <div *ngIf="f.submitted" class="fields">
+            <div *ngIf="successfulRegistered" class="auth-info">
+                <h4>User succesfuly created!</h4>
+                <p>Username: {{ user.email }}</p>
+                <p>Username: {{ user.username }}</p>
+                <p>Press the button to proceed with login</p>
+                <button class="submit" (click)="proceed(successfulRegistered)">GO</button>
+            </div>
+            <div *ngIf="!successfulRegistered" class="auth-info">
+                <div *ngFor="let e of errors">{{e}}</div>
+                <p>Press the button to proceed with registration</p>
+                <button class="submit" (click)="proceed(successfulRegistered)">GO</button>
+            </div>
         </div>
     </form>
 </main>

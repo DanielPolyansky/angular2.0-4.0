@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-login',
@@ -9,31 +9,40 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
 
   signInFormReactive: FormGroup;
+  token: String;
+  successfullLogin: Boolean = false;
   constructor(private auth: AuthService) {
 
    }
 
-   onLogin = () => {
-     this.auth.signIn(this.signInFormReactive.controls.email.value, this.signInFormReactive.controls.password.value)
+   onLogin = (form: FormGroup) => {
+     const user = {
+       email: form.value.email,
+       password: form.value.password
+    };
+     this.auth.signIn(user)
      .subscribe(
-       (response) => {console.log(response),
-       (err) => {console.log(err)} 
-      }
-     )
-   };
+        (res)=>{
+          localStorage.setItem('currentUser', res.json().token);
+          this.token = localStorage.getItem('currentUser');
+          console.log(this.token);
+          console.log(this.successfullLogin);
+          if(this.token!=undefined){
+            this.successfullLogin = true;
+          }
+        },
+        (err)=>{console.log(err)}
+     );
+   }
 
   ngOnInit() {
     this.signInFormReactive = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
-      'password': new FormControl(null, [Validators.required, Validators.min(5), Validators.max(15)])
+      'password': new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(15)])
     });
   }
 
   /*onSubmit = (f:NgForm) => {
     console.log(f);
   }*/
-  onSubmit = () => {
-    console.log(this.signInFormReactive);
-    this.onLogin();
-  }
 }

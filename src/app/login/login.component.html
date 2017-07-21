@@ -1,20 +1,24 @@
 <main>
-    <form class="auth-form" [formGroup]="signInFormReactive" (ngSubmit)="onSubmit()">
+    <form class="auth-form" [formGroup]="signInFormReactive" (ngSubmit)="onLogin(signInFormReactive)" #f="ngForm">
         <header>
             <h1>Sign In</h1>
         </header>
-        <div class="fields">
+        <div class="fields" *ngIf="!f.submitted">
             <div class="auth-field">
                 <label for="email">Email</label>
                 <input name="email" type="text" formControlName="email">
-                <span class="validation" *ngIf="!signInFormReactive.get('email').valid && signInFormReactive.touched">Please, enter a valid email!</span>
+                <span class="validation" *ngIf="!signInFormReactive.get('email').valid && signInFormReactive.get('email').touched">Please, enter a valid email!</span>
             </div>
             <div class="auth-field">
-                <label for="pass">Password</label>
-                <input name="pass" type="password" formControlName="password">
-                <span class="validation" *ngIf="!signInFormReactive.get('password').valid  && signInFormReactive.touched">Please, enter a valid password! From 5 to 15 symbols.</span>
+                <label for="password">Password</label>
+                <input name="password" type="password" formControlName="password" #pass>
+                <span class="validation" *ngIf="!signInFormReactive.get('password').valid && signInFormReactive.get('password').touched"> Please, enter a valid password! From 8 to 15 symbols.</span>
             </div>
-            <button class="submit">Sign up</button>
+            <button class=" submit ">Sign in</button>
+            <div *ngIf="successfullLogin && f.submitted" class="auth-info">
+                <p>Invalid password or username!</p>
+                <button class="submit " onclick=" ">GO</button>
+            </div>
         </div>
     </form>
 </main>

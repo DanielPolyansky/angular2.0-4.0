@@ -5,7 +5,10 @@ export class AuthService {
     constructor(private http: Http){
 
     }
-    signIn(email, password){
-        return this.http.post('http://localhost:3000/api/login',[email, password]);
+    signIn(credentials){
+        return this.http.post('http://localhost:3000/api/login',credentials);
+    }
+    signUp(credentials){
+        return this.http.post('http://localhost:3000/api/authenticate',credentials);
     }
 }

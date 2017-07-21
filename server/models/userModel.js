@@ -7,11 +7,7 @@ module.exports = mongoose.model('User', new Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true,
-        validate: {
-            validator: validator.isEmail,
-            message: '{VALUE} is not an email'
-        }
+        unique: true
     },
     username: {
         type: String,
