@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,11 +11,11 @@ export class LoginComponent implements OnInit {
 
   signInFormReactive: FormGroup;
   token: String;
+  errors: [String];
   successfullLogin: Boolean = false;
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private router: Router) {
 
    }
-
    onLogin = (form: FormGroup) => {
      const user = {
        email: form.value.email,
@@ -23,15 +24,17 @@ export class LoginComponent implements OnInit {
      this.auth.signIn(user)
      .subscribe(
         (res)=>{
+          console.log(res.json());
           localStorage.setItem('currentUser', res.json().token);
           this.token = localStorage.getItem('currentUser');
-          console.log(this.token);
-          console.log(this.successfullLogin);
           if(this.token!=undefined){
             this.successfullLogin = true;
+            this.router.navigateByUrl('/chat')
+          } else {
+            this.errors = res.json();
           }
         },
-        (err)=>{console.log(err)}
+        (err)=>{console.log(err.json())}
      );
    }
 

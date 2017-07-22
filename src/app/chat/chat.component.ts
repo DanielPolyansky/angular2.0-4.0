@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -7,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private router: Router) { }
+  onLogout = ()=>{
+      localStorage.removeItem('currentUser');
+      console.log(localStorage.getItem('currentUser'));
+      this.router.navigateByUrl('/home');
+   }
   ngOnInit() {
   }
 

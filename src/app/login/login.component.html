@@ -19,6 +19,11 @@
                 <p>Invalid password or username!</p>
                 <button class="submit " onclick=" ">GO</button>
             </div>
+            <div *ngIf="f.submitted" class="auth-info">
+                <div *ngFor="let e of errors">{{e}}</div>
+                <p>Press the button to proceed with registration</p>
+                <button class="submit">GO</button>
+            </div>
         </div>
     </form>
 </main>

@@ -93,10 +93,16 @@ auth.post('/authenticate', (req, res, next) => {
                 });
             },
             (err) => {
-                res.json({
-                    success: false,
-                    message: err.message
-                });
+                if (err.code == 11000) {
+                    res.json({
+                        success: false,
+                        message: err.message
+                    });
+                } else
+                    res.json({
+                        success: false,
+                        message: err.message
+                    });
             }
         );
     }

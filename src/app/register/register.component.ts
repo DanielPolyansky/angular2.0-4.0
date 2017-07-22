@@ -51,7 +51,12 @@ export class RegisterComponent implements OnInit {
             this.user.username = newUser.username;
           }
           else {
-            this.errors = res.json().message;
+            if(res.json().message.isArray){
+              this.errors = res.json().message;
+            } else {
+              this.errors.push(res.json().message);
+            }
+            
           }
         },
         (err)=>{console.log(err)}
