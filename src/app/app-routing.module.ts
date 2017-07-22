@@ -13,13 +13,13 @@ import { ConversationSearchComponent } from './chat/conversation-list/conversati
 import { ConversationManagingComponent } from './chat/conversation-list/conversation-managing/conversation-managing.component';
 import { Routes, RouterModule} from "@angular/router";
 import { NgModule } from "@angular/core";
-
+import { AuthGuard } from "./services/auth-guard.service";
 const appRoutes: Routes = [
   { path: '', component: HomeComponent  },
   { path: 'home', component: HomeComponent  },
   { path: 'login',  component: LoginComponent },
   { path: 'register',  component: RegisterComponent },
-  { path: 'chat',  component: ChatComponent }
+  { path: 'chat',  component: ChatComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule ({

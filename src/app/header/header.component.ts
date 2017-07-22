@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   constructor(private auth: AuthService) { }
   status = this.auth.isLogged();
   ngOnInit() {
-    const checkStatus = Observable.interval(2);
+    const checkStatus = Observable.interval(50);
     checkStatus.subscribe(()=>{
       this.status = this.auth.isLogged();
     }

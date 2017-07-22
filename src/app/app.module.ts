@@ -19,7 +19,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { AuthService } from './services/auth.service';
-
+import { AuthGuard } from "./services/auth-guard.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +44,7 @@ import { AuthService } from './services/auth.service';
     ReactiveFormsModule,
     HttpModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
