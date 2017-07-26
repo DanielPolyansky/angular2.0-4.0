@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
-const validator = require('validator');
 module.exports = mongoose.model('User', new Schema({
     email: {
         type: String,
@@ -24,6 +23,6 @@ module.exports = mongoose.model('User', new Schema({
     },
     picture: String,
     friends: [String],
-    conversations: [String]
+    messages: [String]
 
 }));

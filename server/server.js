@@ -6,17 +6,18 @@ const secret = require('../config').secret;
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const routes = require('./routes');
 const validator = require('express-validator');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const database = require('../config').database;
 const MongoClient = require('mongodb').MongoClient;
+const chatting = require('./chatting');
+const socket = require('socket.io');
 mongoose.Promise = global.Promise;
 let server = app.listen(port, () => {
     console.log('server is running on ' + port);
 });
-
+const io = socket(server);
 /*MongoClient.connect(database, (err, db) => {
     if (err) {
         return console.log(err);
@@ -35,11 +36,26 @@ mongoose.connect(database, (err) => {
     }
 });
 
+io.on('connection', (socket) => {
+    console.log('socket connected');
+    console.log(socket);
+    socket.on('disconnect', () => {
+        console.log('socket disconnected');
+    });
+    socket.on('new_msg', (data) => {
+        console.log(data);
+        io.sockets.emit('new_income_msg', {
+            message: data.message
+        })
+    });
+});
+
 app.set('superSecret', secret);
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 app.use(morgan('dev'));
 app.use('/api', auth);
-app.use('/', routes);
+app.use('/', chatting);

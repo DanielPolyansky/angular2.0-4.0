@@ -8,12 +8,6 @@ import { RegisterComponent } from './register/register.component';
 import { HeaderComponent } from './header/header.component';
 import { ConversationListComponent } from './chat/conversation-list/conversation-list.component';
 import { MessageListComponent } from './chat/message-list/message-list.component';
-import { MessageComponent } from './chat/message-list/message/message.component';
-import { MessageSearchComponent } from './chat/message-list/message/message-search/message-search.component';
-import { MessageInputComponent } from './chat/message-list/message/message-search/message-input/message-input.component';
-import { ConversationComponent } from './chat/conversation-list/conversation/conversation.component';
-import { ConversationSearchComponent } from './chat/conversation-list/conversation-search/conversation-search.component';
-import { ConversationManagingComponent } from './chat/conversation-list/conversation-managing/conversation-managing.component';
 import { Routes, RouterModule } from "@angular/router";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -30,12 +24,7 @@ import { AuthGuard } from "./services/auth-guard.service";
     HeaderComponent,
     ConversationListComponent,
     MessageListComponent,
-    MessageComponent,
-    MessageSearchComponent,
-    MessageInputComponent,
-    ConversationComponent,
-    ConversationSearchComponent,
-    ConversationManagingComponent
+    ConversationListComponent
   ],
   imports: [
     BrowserModule,
