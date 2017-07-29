@@ -14,6 +14,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from "./services/auth-guard.service";
+import { SettingsComponent } from "./chat/settings/settings.component";
+import { UsersearchComponent } from './chat/usersearch/usersearch.component'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,9 @@ import { AuthGuard } from "./services/auth-guard.service";
     HeaderComponent,
     ConversationListComponent,
     MessageListComponent,
-    ConversationListComponent
+    ConversationListComponent,
+    SettingsComponent,
+    UsersearchComponent 
   ],
   imports: [
     BrowserModule,

@@ -12,13 +12,13 @@ import { Subscription } from 'rxjs/Subscription';
 export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private auth: AuthService) { }
   mySubscription: Subscription;
-  status:Boolean = this.auth.isLogged();
+  status:Boolean;
   ngOnInit() {
-    const checkStatus = Observable.create((observer:Observer<any>)=>{});//розібратись ще як працює
+    const checkStatus = Observable.interval(1);
+    //розібратись ще як працює
     this.mySubscription = checkStatus.subscribe(()=>{
       this.status = this.auth.isLogged();
-    }
-    );
+    });
   }
   ngOnDestroy(){
     this.mySubscription.unsubscribe();
