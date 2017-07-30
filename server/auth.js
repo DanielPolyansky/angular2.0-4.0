@@ -6,7 +6,6 @@ const secret = require('../config').secret;
 const jwt = require('jsonwebtoken');
 const { SHA256 } = require('crypto-js');
 
-
 let socket = require('socket.io');
 
 auth.post('/login', (req, res, next) => {
@@ -28,7 +27,7 @@ auth.post('/login', (req, res, next) => {
         })
     } else {
         User.findOne({
-            email: req.body.email,
+            email: req.body.email
         }, (err, user) => {
             if (err) {
                 console.log(err.msg);
@@ -107,5 +106,6 @@ auth.post('/authenticate', (req, res, next) => {
         );
     }
 });
+
 
 module.exports = auth;

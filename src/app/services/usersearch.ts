@@ -11,6 +11,6 @@ export class UserSearch {
     }
     
     userSearch(passedValue:String){
-        return this.http.post('http://localhost:3000/usersearch',passedValue);
+        return this.http.post('http://localhost:3000/api/usersearch',passedValue);
     }
 }

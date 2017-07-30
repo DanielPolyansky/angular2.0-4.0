@@ -20,7 +20,7 @@ export class UsersearchComponent implements OnInit {
     const usersearchObs = Observable.interval(1);
     //розібратись ще як працює і переробити по людськи
     this.mySubscription = usersearchObs.subscribe(()=>{
+      //this.usersearch.userSearch();
     });
   }
-
 }

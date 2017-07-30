@@ -6,21 +6,28 @@ const secret = require('../config').secret;
 const jwt = require('jsonwebtoken');
 const { SHA256 } = require('crypto-js');
 
-search.get('/usersearch', (req, res, next) => {
-    userList = [String];
+search.post('/usersearch', (req, res, next) => {
     User.find({
-        username: req.body.usersearch + '*'
-    }, (err, users) => {
+        username: new RegExp(req.body.username, "i")
+    }, 'username', (err, users) => {
         if (err) {
-            console.log(err.msg)
+            console.log(err);
         } else {
-            res.json()
+            if (users.length == 0) {
+                res.json({
+                    success: true,
+                    message: 'No users is founded'
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: 'Users founded',
+                    users
+                });
+            }
         }
     });
-    res.json({
-        success: true,
 
-    });
 });
 
 module.exports = search;

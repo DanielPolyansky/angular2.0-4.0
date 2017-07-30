@@ -59,5 +59,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 app.use(morgan('dev'));
 app.use('/api', auth);
-app.use('/search', search);
-app.use('/', chatting);
+app.use('/api', search);
+app.use('/api', chatting);
