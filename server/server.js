@@ -18,6 +18,7 @@ let server = app.listen(port, () => {
     console.log('server is running on ' + port);
 });
 const io = socket(server);
+const search = require('./usersearch');
 /*MongoClient.connect(database, (err, db) => {
     if (err) {
         return console.log(err);
@@ -58,4 +59,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 app.use(morgan('dev'));
 app.use('/api', auth);
+app.use('/search', search);
 app.use('/', chatting);

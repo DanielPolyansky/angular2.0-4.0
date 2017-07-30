@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   status:Boolean;
   ngOnInit() {
     const checkStatus = Observable.interval(1);
-    //розібратись ще як працює
+    //розібратись ще як працює і переробити по людськи
     this.mySubscription = checkStatus.subscribe(()=>{
       this.status = this.auth.isLogged();
     });
