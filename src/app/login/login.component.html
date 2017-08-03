@@ -14,16 +14,11 @@
                 <input name="password" type="password" formControlName="password" #pass>
                 <span class="validation" *ngIf="!signInFormReactive.get('password').valid && signInFormReactive.get('password').touched"> Please, enter a valid password! From 8 to 15 symbols.</span>
             </div>
-            <button class=" submit ">Sign in</button>
-            <div *ngIf="successfullLogin && f.submitted" class="auth-info">
-                <p>Invalid password or username!</p>
-                <button class="submit " onclick=" ">GO</button>
-            </div>
-            <div *ngIf="f.submitted" class="auth-info">
-                <div *ngFor="let e of errors">{{e}}</div>
-                <p>Press the button to proceed with registration</p>
-                <button class="submit">GO</button>
-            </div>
+            <button class="submit">Sign in</button>
+        </div>
+        <div *ngIf="!successfullLogin && f.submitted" class="fields">
+            <div *ngFor="let e of errors" class="auth-field">{{e}}</div>
+            <button class="submit" (click)="proceed()">GO</button>
         </div>
     </form>
 </main>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -8,14 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  @ViewChild ('f') signInForm: NgForm;
   signInFormReactive: FormGroup;
   token: String;
-  errors: [String];
+  errors = [];
   successfullLogin: Boolean = false;
   constructor(private auth: AuthService, private router: Router) {
 
    }
+  proceed = ()=>{
+    this.signInForm.resetForm();
+    this.errors = [];
+  }
    onLogin = (form: FormGroup) => {
      const user = {
        email: form.value.email,
@@ -24,14 +28,16 @@ export class LoginComponent implements OnInit {
      this.auth.signIn(user)
      .subscribe(
         (res)=>{
-          console.log(res.json());
-          localStorage.setItem('currentUser', res.json().token);
-          this.token = localStorage.getItem('currentUser');
           if(this.token!=undefined){
             this.successfullLogin = true;
+            console.log(res.json());
+            localStorage.setItem('currentUser', res.json().token);
+            this.token = localStorage.getItem('currentUser');
             this.router.navigateByUrl('/chat')
           } else {
-            this.errors = res.json();
+            console.log(res.json());   
+            this.errors.push(res.json().message);
+            console.log(this.errors);
           }
         },
         (err)=>{console.log(err.json())}
