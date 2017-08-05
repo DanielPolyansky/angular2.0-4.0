@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
      this.auth.signIn(user)
      .subscribe(
         (res)=>{
-          if(this.token!=undefined){
+          if(typeof res.json().token !== 'undefined'){
+            console.log(this.auth.isLogged())
+            console.log(this.token);
             this.successfullLogin = true;
             console.log(res.json());
             localStorage.setItem('currentUser', res.json().token);

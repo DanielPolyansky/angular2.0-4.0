@@ -13,6 +13,7 @@ const database = require('../config').database;
 const MongoClient = require('mongodb').MongoClient;
 const chatting = require('./chatting');
 const socket = require('socket.io');
+const friends = require('./friends');
 mongoose.Promise = global.Promise;
 let server = app.listen(port, () => {
     console.log('server is running on ' + port);
@@ -29,13 +30,7 @@ const search = require('./usersearch');
 
 });*/
 
-mongoose.connect(database, (err) => {
-    if (err) {
-        console.log('Error while connecting to MLab');
-    } else {
-        console.log('DB connection established');
-    }
-});
+mongoose.connect(database);
 
 io.on('connection', (socket) => {
     console.log('socket connected');
@@ -61,3 +56,4 @@ app.use(morgan('dev'));
 app.use('/api', auth);
 app.use('/api', search);
 app.use('/api', chatting);
+app.use('/api', friends);

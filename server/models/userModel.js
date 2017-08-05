@@ -21,8 +21,8 @@ module.exports = mongoose.model('User', new Schema({
         min: [6, 'Too short'],
         max: [15, 'Too long']
     },
-    picture: String,
+    picture: [String],
     friends: [String],
-    messages: [String]
-
+    messages: [String],
+    friendsRequests: [String]
 }));

@@ -9,9 +9,9 @@ export class ChatComponent implements OnInit {
 
   constructor(private router: Router) { }
   onLogout = ()=>{
+      this.router.navigateByUrl('/home')
       localStorage.removeItem('currentUser');
       console.log(localStorage.getItem('currentUser'));
-      this.router.navigateByUrl('/home');
    }
   ngOnInit() {
   }

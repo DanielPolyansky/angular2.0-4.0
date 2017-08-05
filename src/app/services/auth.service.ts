@@ -6,10 +6,16 @@ export class AuthService {
 
     }
     isLogged = ()=>{
-        if(localStorage.getItem('currentUser')!=undefined||localStorage.getItem('currentUser')!=null){
+    if(typeof localStorage.getItem('currentUser') === "undefined"){
+            return false;
+        } 
+    else if(localStorage.getItem('currentUser')==null){
+            return false;
+        }
+        else{
             return true;
         }
-        else return false;
+            
     };
     signIn(credentials){
         return this.http.post('http://localhost:3000/api/login',credentials);

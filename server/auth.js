@@ -81,8 +81,7 @@ auth.post('/authenticate', (req, res, next) => {
         const newUser = new User({
             email: req.body.email,
             username: req.body.username,
-            password: req.body.password,
-            friends: []
+            password: req.body.password
         });
 
         newUser.save().then((user) => {
@@ -93,9 +92,10 @@ auth.post('/authenticate', (req, res, next) => {
             },
             (err) => {
                 if (err.code == 11000) {
+                    console.log(err.errmsg);
                     res.json({
                         success: false,
-                        message: err.message
+                        message: "Such an email or username are already exist!"
                     });
                 } else
                     res.json({
