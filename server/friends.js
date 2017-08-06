@@ -7,15 +7,15 @@ const jwt = require('jsonwebtoken');
 const { SHA256 } = require('crypto-js');
 
 
-friends.post('/add', (req, res, next) => {
+friends.post('/add', (req, res, next) => { //переробити промісами нормально через зен, якщо нема юзера то пошле нах і все завалиться
     User.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
+            console.log(err);
             res.json({
                 success: false,
-                message: 'smthing went wrong'
+                message: 'smthing went wrong, mayby user is not founded'
             });
         } else {
-
             if (user.friendsRequests.indexOf(req.body.myusername) >= 0) {
                 res.json({
                     success: true,
@@ -26,7 +26,7 @@ friends.post('/add', (req, res, next) => {
                     if (err) {
                         res.json({
                             success: false,
-                            message: err.msg
+                            message: "smthing go wrong, maybe user who sent the request does not exist"
                         })
                     } else {
                         if (myuser.friendsRequests.indexOf(req.body.username) >= 0) {
@@ -34,7 +34,7 @@ friends.post('/add', (req, res, next) => {
                                 success: false,
                                 message: 'you already have a request from this user'
                             });
-                        } else if (myuser.friends.indexOf(req.body.username)) {
+                        } else if (myuser.friends.indexOf(req.body.username) >= 0) {
                             res.json({
                                 success: false,
                                 message: 'you already have this user in your friends list'

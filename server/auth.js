@@ -81,7 +81,10 @@ auth.post('/authenticate', (req, res, next) => {
         const newUser = new User({
             email: req.body.email,
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            friendsRequests: [],
+            friends: [],
+            picture: ""
         });
 
         newUser.save().then((user) => {
