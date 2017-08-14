@@ -73,38 +73,63 @@ friends.post('/add', (req, res, next) => { //переробити проміса
 });
 
 friends.delete('/delete', (req, res, next) => {
-    User.find({ username: req.username }, (err, user) => {
-
+    User.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
             res.json({
-                success: false,
-                message: err.msg
+                "success": false,
+                "message": err.msg
             });
-        } else {
-
-            let index1 = user.friends.indexOf(req.body.myusername);
-            let tempFormerFriendList = user.friends.splice(index1, 1);
-            User.update({ username: req.body.username }, { $set: { friends: tempFormerFriendList } }, () => {
-                console.log('deleted from former friend friendlist');
-            });
+        } else if (user) {
             User.findOne({ username: req.body.myusername }, (err, myuser) => {
                 if (err) {
                     res.json({
-                        success: false,
-                        message: 'Can`t remove you from user friends'
+                        "success": false,
+                        "message": err.msg
                     });
-                } else {
-                    let index2 = myuser.friends.indexOf(req.body.username);
-                    let tempMyFriendList = myuser.friends.splice(index2, 1);
-                    User.update({ username: req.body.username }, { $set: { friends: tempFormerFriendList } }, () => {
-                        res.json({
-                            success: true,
-                            message: 'user successfuly deleted'
+                } else if (myuser) {
+                    if (myuser.friends.indexOf(user.username) >= 0) {
+                        let index1 = myuser.friends.indexOf(req.body.username);
+                        myuser.friends.splice(index1, 1);
+                        let myFriendsList = myuser.friends;
+
+                        let index2 = user.friends.indexOf(req.body.myusername);
+                        user.friends.splice(index2, 1);
+                        let userFriendsList = user.friends;
+
+                        User.update({ username: req.body.myusername }, {
+                            $set: { friends: myFriendsList }
+                        }, () => {
+                            console.log("my friendslist updated!");
                         });
-                    });
-                };
+                        User.update({ username: req.body.username }, {
+                            $set: { friends: userFriendsList }
+                        }, () => {
+                            console.log("former friend friendslist updated!");
+                        });
+                        res.json({
+                            "success": true,
+                            "message": "friend was deleted"
+                        });
+                    } else {
+                        res.json({
+                            "success": false,
+                            "message": "This user is not your friend!"
+                        })
+                    }
+
+                } else {
+                    res.json({
+                        "success": false,
+                        "message": "user not found1"
+                    })
+                }
             });
-        };
+        } else {
+            res.json({
+                "success": false,
+                "message": "user not found2"
+            });
+        }
     });
 });
 
