@@ -6,20 +6,29 @@ const secret = require('../config').secret;
 const jwt = require('jsonwebtoken');
 const { SHA256 } = require('crypto-js');
 
-
 friends.post('/add', (req, res, next) => { //переробити промісами нормально через зен, якщо нема юзера то пошле нах і все завалиться
     User.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
-            console.log(err);
             res.json({
                 success: false,
-                message: 'smthing went wrong, mayby user is not founded'
+                message: 'smthing went wrong'
             });
-        } else {
+        } else if (user) {
+            if (req.body.username == req.body.myusername) {
+                res.json({
+                    "success": false,
+                    "message": "user could not send request to himself"
+                });
+            } else
             if (user.friendsRequests.indexOf(req.body.myusername) >= 0) {
                 res.json({
                     success: true,
                     message: "this user already have a request from you"
+                });
+            } else if (user.friends.indexOf(req.body.myusername) >= 0) {
+                res.json({
+                    success: true,
+                    message: "this user is already your friend"
                 });
             } else {
                 User.findOne({ username: req.body.myusername }, (err, myuser) => {
@@ -53,6 +62,11 @@ friends.post('/add', (req, res, next) => { //переробити проміса
                     }
                 })
             }
+        } else {
+            res.json({
+                "success": false,
+                "message": "user not found"
+            });
         }
 
     })
@@ -60,12 +74,14 @@ friends.post('/add', (req, res, next) => { //переробити проміса
 
 friends.delete('/delete', (req, res, next) => {
     User.find({ username: req.username }, (err, user) => {
+
         if (err) {
             res.json({
                 success: false,
                 message: err.msg
             });
         } else {
+
             let index1 = user.friends.indexOf(req.body.myusername);
             let tempFormerFriendList = user.friends.splice(index1, 1);
             User.update({ username: req.body.username }, { $set: { friends: tempFormerFriendList } }, () => {
@@ -97,42 +113,73 @@ friends.post('/accept', (req, res, next) => {
     User.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
             res.json({
-                success: false,
-                message: err.msg
+                "success": false,
+                "message": err.msg
+            });
+        } else if (user) {
+            User.findOne({ username: req.body.myusername }, (err, myuser) => {
+                if (err) {
+                    res.json({
+                        "success": false,
+                        "message": err.msg
+                    });
+                } else if (myuser) {
+                    if (myuser.friendsRequests.indexOf(user.username) >= 0) {
+                        if (req.body.accept == true) {
+                            let index = myuser.friendsRequests.indexOf(req.body.username);
+                            myuser.friendsRequests.splice(index, 1);
+                            let myFriendsRequests = myuser.friendsRequests;
+                            myuser.friends.push(user.username);
+                            let myFriendsList = myuser.friends;
+                            console.log(user);
+                            user.friends.push(myuser.username);
+                            let userFriendList = user.friends;
+                            User.update({ username: req.body.myusername }, {
+                                $set: { friendsRequests: myFriendsRequests, friends: myFriendsList }
+                            }, () => {
+                                console.log("my friends and friendsRequest list updated!");
+                            });
+                            User.update({ username: req.body.username }, {
+                                $set: { friends: userFriendList }
+                            }, () => {
+                                console.log("new friend friendslist updated!");
+                            });
+                            res.json({
+                                "success": true,
+                                "message": "friend was added"
+                            });
+                        } else {
+                            let index = myuser.friendsRequests.indexOf(user.username);
+                            myuser.friendsRequests.splice(index, 1);
+                            let myFriendsRequests = myuser.friendsRequests;
+                            User.update({ username: req.body.myusername }, {
+                                $set: { friendsRequests: myFriendsRequests }
+                            }, () => {
+                                res.json({
+                                    "success": true,
+                                    "message": "friend request denied!"
+                                });
+                            });
+                        }
+                    } else {
+                        res.json({
+                            "success": false,
+                            "message": "This user does not have appropriate request!"
+                        })
+                    }
+
+                } else {
+                    res.json({
+                        "success": false,
+                        "message": "user not found1"
+                    })
+                }
             });
         } else {
-            if (req.body.accept == true) {
-                let tempNewFriendList = user.friends
-                tempNewFriendList.push(req.body.myusername);
-                User.update({ username: req.body.username }, { $set: { friends: tempNewFriendList } }, () => {
-                    console.log('new friend friendlist was changed');
-                });
-                User.findOne({ username: req.body.myusername }, (err, myuser) => {
-                    if (err) {
-                        res.json({
-                            success: false,
-                            message: err.msg
-                        });
-                    } else {
-                        let tempMyFriendList = myuser.friends;
-                        tempMyFriendList.push(req.body.username);
-                        let index = myuser.friendsRequests.indexOf(req.body.username);
-                        let tempMyRequests = myuser.friendsRequests.splice(index, 1);
-                        User.update({ username: req.body.myusername }, { $set: { friends: tempMyFriendList, friendsRequests: tempMyRequests } }, () => {
-                            console.log('my friendlist was changed');
-                        });
-                        res.json({
-                            success: true,
-                            message: 'friend was added'
-                        });
-                    }
-                })
-            } else {
-                res.json({
-                    success: true,
-                    message: 'request was denied'
-                });
-            }
+            res.json({
+                "success": false,
+                "message": "user not found2"
+            });
         }
     });
 });
