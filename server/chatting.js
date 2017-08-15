@@ -1,13 +1,18 @@
-let socket = require('socket.io');
+const socket = require('socket.io');
 const express = require('express');
 const send = express.Router();
-send.post('/authenticate', (req, res, next) => {
+
+const chatting = (socket) => {
+    console.log('socket connected');
+    socket.on('disconnect', () => {
+        console.log('socket disconnected');
+    });
     socket.on('new_msg', (data) => {
-        console.log(data);
         io.sockets.emit('new_income_msg', {
             message: data.message
         })
     });
-});
+};
 
-module.exports = send;
+
+module.exports = chatting;

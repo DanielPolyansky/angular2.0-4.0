@@ -12,8 +12,8 @@ const mongoose = require('mongoose');
 const database = require('../config').database;
 const MongoClient = require('mongodb').MongoClient;
 const chatting = require('./chatting');
-const socket = require('socket.io');
 const friends = require('./friends');
+const socket = require('socket.io');
 mongoose.Promise = global.Promise;
 let server = app.listen(port, () => {
     console.log('server is running on ' + port);
@@ -32,19 +32,7 @@ const search = require('./usersearch');
 
 mongoose.connect(database);
 
-io.on('connection', (socket) => {
-    console.log('socket connected');
-    console.log(socket);
-    socket.on('disconnect', () => {
-        console.log('socket disconnected');
-    });
-    socket.on('new_msg', (data) => {
-        console.log(data);
-        io.sockets.emit('new_income_msg', {
-            message: data.message
-        })
-    });
-});
+io.on('connection', chatting);
 
 app.set('superSecret', secret);
 
